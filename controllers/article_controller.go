@@ -4,7 +4,8 @@ import (
 	"net/http"
 	"strconv"
 	"web/entities/articles"
-	repo "web/repostiories"
+	repo "web/repositories/articles"
+	svc "web/services/articles"
 
 	"github.com/gin-gonic/gin"
 )
@@ -15,7 +16,7 @@ func GetArticle(context *gin.Context) {
 		return
 	}
 
-	var article repo.Article = repo.GetArticle(id)
+	var article repo.Article = svc.GetArticle(id)
 
 	context.JSON(http.StatusOK, gin.H{
 		"title":   article.Title,
@@ -26,7 +27,7 @@ func GetArticle(context *gin.Context) {
 func CreateArticle(context *gin.Context) {
 	var request articles.ArticleCreateRequestEntity
 	context.BindJSON(&request)
-	var id = repo.CreateArticle(repo.Article{Title: request.Title, Content: request.Content})
+	var id = svc.CreateArticle(request)
 	context.JSON(http.StatusOK, gin.H{
 		"Id": id,
 	})
@@ -37,5 +38,5 @@ func DeleteArticle(context *gin.Context) {
 	if err != nil {
 		return
 	}
-	repo.DeleteArticle(id)
+	svc.DeleteArticle(id)
 }

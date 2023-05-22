@@ -1,4 +1,4 @@
-package repostiories
+package articles
 
 import (
 	"time"
